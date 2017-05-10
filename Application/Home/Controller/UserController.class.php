@@ -11,7 +11,7 @@ class UserController extends BaseController {
 			}else{
 			  $username = I("username");
 			  
-			  if (length($username) > 20) {
+			  if (strlen($username) > 20) {
 				  $this->message("用户名过长，请保持在20字符内");
 			  } else {
 				  
