@@ -10,30 +10,35 @@ class UserController extends BaseController {
 			  $this->display ();
 			}else{
 			  $username = I("username");
-			  $password = I("password");
-			  $confirm_password = I("confirm_password");
-			  $v_code = I("v_code");
-			  if ($v_code && $v_code == session('v_code')) {
-			  	if ( $password != '' && $password == $confirm_password) {
+			  
+			  if (length($username) > 20) {
+				  $this->message("用户名过长，请保持在20字符内");
+			  } else {
+				  
+				  $password = I("password");
+				  $confirm_password = I("confirm_password");
+				  $v_code = I("v_code");
+				  if ($v_code && $v_code == session('v_code')) {
+					if ( $password != '' && $password == $confirm_password) {
 
-			  		if ( ! D("User")->isExist($username) ) {
-						$ret = D("User")->register($username,$password);
-						if ($ret) {
-					      $this->message("注册成功！",U('Home/User/login'));					    
+						if ( ! D("User")->isExist($username) ) {
+							$ret = D("User")->register($username,$password);
+							if ($ret) {
+							  $this->message("注册成功！",U('Home/User/login'));					    
+							}else{
+							  $this->message("用户名或密码不正确");
+							}
 						}else{
-						  $this->message("用户名或密码不正确");
+							$this->message("用户名已经存在啦！");
 						}
-			  		}else{
-			  			$this->message("用户名已经存在啦！");
-			  		}
 
-			  	}else{
-			  		$this->message("两次输入的密码不一致！");
-			  	}
-			  }else{
-			    $this->message("验证码不正确");
+					}else{
+						$this->message("两次输入的密码不一致！");
+					}
+				  }else{
+					$this->message("验证码不正确");
+				  }
 			  }
-
 			}
 	}
 
